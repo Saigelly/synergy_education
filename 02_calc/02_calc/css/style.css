@@ -1,0 +1,188 @@
+/*ОБНУЛЕНИЕ*/
+
+*{
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+*,*:before,*:after{
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+:focus,:active{outline: none;}
+a:focus,a:active{outline: none;}
+
+nav,footer,header,aside{display: block;}
+
+html,body{
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+    line-height: 1;
+    font-size: 14px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+input,button,textarea{font-family: inherit;}
+
+input::-ms-clear{display: none;}
+button{cursor: pointer;}
+button::-moz-focus-inner{padding: 0;border: 0;}
+a, a:visited{
+    text-decoration: none;
+    color: inherit;}
+a:hover{text-decoration: none;}
+ul li{list-style: none;}
+img{vertical-align: top;}
+
+h1, h2, h3, h4, h5, h6{font-size: inherit; font-weight: 400;}
+/* ------------------------------- */
+
+body{
+    background: #E5E5E5;
+    font-family: "Open Sans", sans-serif;
+    font-size: 26px;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+}
+.calc {
+    border: 1px solid grey;
+    /* flex: 1 0 100%; */
+    min-height: 500px;
+    max-width: 510px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    background: rgb(254,254,254);
+    background: linear-gradient(266deg, rgba(254,254,254,1) 0%, rgba(249,249,249,1) 13%, rgba(243,243,243,1) 33%, rgba(229,229,229,1) 100%);
+}
+.calc__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid yellow;
+    width: 100%;
+    padding: 25px 30px;
+    margin-bottom: 50px;
+}
+.toggle {
+    width: 122px;
+    height: 44px;
+    border: 1px solid yellow;
+    margin: auto;
+}
+.calc__toggle {
+}
+.calc__history {
+    width: 30px;
+    height: 30px;
+}
+.calc__display {
+    border: 1px solid red;
+    font-size: 22px;
+    padding: 0 30px;
+}
+.calc__term {
+    text-align: right;
+    color: #3737377e;
+    font-weight: 500;
+    height: 35px;
+    line-height: 35px;
+}
+
+.calc__result-window {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.calc__equals {
+    font-size: 26px;
+    font-weight: 600;
+    /* min-width: 70px; */
+    flex: 0 0 50px;
+    min-height: 50px;
+    text-align: center;
+    line-height: 50px;
+}
+.calc__result {
+    display: block;
+    text-align: right;
+    background: transparent;
+    height: 50px;
+    font-weight: 600;
+    font-size: 40px;
+    min-width: 20px;
+    flex: 1 1 auto;
+}
+.calc__keypad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    padding: 25px 0;
+    /* background: linear-gradient(45deg, rgba(158,232,255,1) 2%, rgba(90,206,255,1) 28%, rgba(121,175,255,1) 65%, rgba(45,95,222,1) 100%);; */
+    background: linear-gradient(152deg, rgba(174,219,252,1) 0%, rgba(145,198,254,1) 80%);
+}
+.calc__column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.calc__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    max-width: 260px;
+    gap: 15px;
+}
+.calc__row_memory {
+}
+
+.calc__key {
+    width: 70px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(255, 255, 255, 30%);
+    box-shadow: 0 0 4px rgb(0, 0, 0, 25%);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.row-keys {
+    background-color: rgb(255, 255, 255, 30%);
+    border-radius: 40px;
+    box-shadow: 0 0 4px rgb(0, 0, 0, 25%);
+
+}
+
+.calc__column_keys{
+    background-color: rgb(255, 255, 255, 30%);
+    border-radius: 40px;
+    box-shadow: 0 0 4px rgb(0, 0, 0, 25%);
+}
+.row-keys .calc__key,
+.calc__column_keys .calc__key{
+    box-shadow: 0 0 4px rgb(0, 0, 0, 0%);;
+    background-color: #0000;
+}
+.calc__key:hover{
+    box-shadow: 0 3px 15px rgb(0, 0, 0, 5%);
+}
+.row-keys .calc__key:hover,
+.calc__column_keys .calc__key:hover{
+    background-color: #ffffff28;
+    
+}

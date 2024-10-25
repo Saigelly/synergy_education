@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>ToDoList</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <section class="calc">
+            <header class="calc__header">
+                <div class="toggle calc__toggle">
+
+                </div>
+                <img src="./img/History.svg" class="calc__history">
+                </img>
+            </header>
+            <div class="calc__display">
+                <p class="calc__term">
+                  5+5*30
+                </p>
+                <div class="calc__result-window">
+                    <p class="calc__equals">=</p>
+                    <input type="text" class="calc__result">
+                </div>
+            </div>
+            <div class="calc__keypad">
+                <div class="calc__column">
+                    <div class="calc__row calc__row_memory row-keys">
+                        <div class="calc__key row-keys" id="key_MRC">MRC</div>
+                        <div class="calc__key row-keys" id="M-minus">M-</div>
+                        <div class="calc__key row-keys" id="M-plus">M+</div>
+                    </div>
+                    <div class="calc__row calc__row_other row-keys">
+                        <div class="calc__key row-keys" id="C-CE">C/CE</div>
+                        <div class="calc__key row-keys" id="√">√</div>
+                        <div class="calc__key row-keys" id="%">%</div>
+                    </div>
+                    <div class="calc__row">
+                        <div class="calc__key calc__key_1">1</div>
+                        <div class="calc__key calc__key_2">2</div>
+                        <div class="calc__key calc__key_3">3</div>
+                    </div>
+                    <div class="calc__row">
+                        <div class="calc__key calc__key_4">4</div>
+                        <div class="calc__key calc__key_5">5</div>
+                        <div class="calc__key calc__key_6">6</div>
+                    </div>
+                    <div class="calc__row">
+                        <div class="calc__key calc__key_7">7</div>
+                        <div class="calc__key calc__key_8">8</div>
+                        <div class="calc__key calc__key_9">9</div>
+                    </div>
+                    <div class="calc__row">
+                        <div class="calc__key calc__key_point">.</div>
+                        <div class="calc__key calc__key_zero">0</div>
+                        <div class="calc__key calc__key_double-zero">00</div>
+                    </div>
+                </div>
+                <div class="calc__column">
+                    <div class="calc__column calc__column_keys">
+                        <div class="calc__key calc__key_plus-minus">+/-</div>
+                        <div class="calc__key calc__key_divided">÷</div>
+                        <div class="calc__key calc__key_multi">×</div>
+                        <div class="calc__key calc__key_minus">-</div>
+                        <div class="calc__key calc__key_plus">+</div>
+                        <div class="calc__key calc__key_equals">=</div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
