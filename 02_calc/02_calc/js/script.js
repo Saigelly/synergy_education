@@ -1,139 +1,83 @@
-const FIELD_TASK = document.querySelector('.task-list');
-const LIST_TASK = document.querySelector('.task-list__tasks');
-let TASK_ID = 0;
+//Объекты из потока
+const calcKeypad = document.querySelector('.calc__keypad')
 
-//создание карточки таска при нажатие на кнопку добавить или интер
-const addBtn = document.querySelector('.control__btn');
+// Переменные
+const MEMORY = 0;
+const buttons = [
+    {class: 'calc__key calc__key_color-red', id: 'key_mrc', text: 'MRC', onclick: 'readMemory()'},
+    {class: 'calc__key calc__key_color-red', id: 'key_m-subtract', text: 'M-', onclick: 'subtractFromMemory()'},
+    {class: 'calc__key calc__key_color-red', id: 'key_m-add', text: 'M+', onclick: 'addToMemory()'},
+    {class: 'calc__key calc__key_color-red', id: 'key_del', text: 'del', onclick: 'delTheLastChar()'},
 
-addBtn.addEventListener('click', () => {
-    const taskInput = document.querySelector('.control__input')
-    //Если что-то введенов инпут, то делаем карточку
-    if (taskInput.value) {
-        const newTask = document.createElement('li');
-        newTask.classList.add('task-list__item', 'item');
+    {class: 'calc__key calc__key_color-orange', id: 'key_c-ce', text: 'C/CE', onclick: 'clearDisplay()'},
+    {class: 'calc__key calc__key_color-orange', id: 'key_sqrt', text: '√', onclick: 'sqrtOfNumber()'},
+    {class: 'calc__key calc__key_color-orange', id: 'key_modulus', text: '%', onclick: 'printToDisplay()'},
+    {class: 'calc__key calc__key_color-orange', id: 'key_divided', text: '÷', onclick: 'printToDisplay()'},
 
-        const taskID = generateTaskID();
+    {class: 'calc__key', id: 'key_1', text: '1', onclick: 'printToDisplay()'},
+    {class: 'calc__key', id: 'key_2', text: '2', onclick: 'printToDisplay()'},
+    {class: 'calc__key', id: 'key_3', text: '3', onclick: 'printToDisplay()'},
+    {class: 'calc__key calc__key_color-orange', id: 'key_mult', text: '×', onclick: 'printToDisplay()'},
 
-        newTask.dataset.taskId = `task_${taskID}`
-        newTask.innerHTML = `
-            <input type="checkbox" name="chec-task" class="item__checkbox" id="task_${taskID}" >
-            <p class="item__text">${taskInput.value}</p>
-                            <ul class="item__action">
-                                <li class="btn-action btn-action_done">
-                                    <img src="../5_toDoList/img/done.png"  alt="done" class="btn-action__img btn-action__img_done">
-                                </li>
-                                <li class="btn-action btn-action_del">
-                                    <img src="../5_toDoList/img/delete.png" alt="delete" class="btn-action__img btn-action__img_del">
-                                </li>
-                            </ul>
-        `;
+    {class: 'calc__key', id: 'key_4', text: '4', onclick: 'printToDisplay()'},
+    {class: 'calc__key', id: 'key_5', text: '5', onclick: 'printToDisplay()'},
+    {class: 'calc__key', id: 'key_6', text: '6', onclick: 'printToDisplay()'},
+    {class: 'calc__key calc__key_color-orange', id: 'key_subtract', text: '-', onclick: 'printToDisplay()'},
 
-        LIST_TASK.append(newTask);
-        taskInput.value = '';
+    {class: 'calc__key', id: 'key_7', text: '7', onclick: 'printToDisplay()'},
+    {class: 'calc__key', id: 'key_8', text: '8', onclick: 'printToDisplay()'},
+    {class: 'calc__key', id: 'key_9', text: '9', onclick: 'printToDisplay()'},
+    {class: 'calc__key calc__key_color-orange', id: 'key_add', text: '+', onclick: 'printToDisplay()'},
 
-        //при изменения осстояния чекбокса, меняем стиль Таска на "выбранный"
-        newTask.firstElementChild.addEventListener('change', (e) => {
-            e.target.parentElement.classList.toggle('item_checked')
-        });
+    {class: 'calc__key', id: 'key_plus-minus', text: '+/-', onclick: ''},
+    {class: 'calc__key', id: 'key_zero', text: '0', onclick: 'printToDisplay()'},
+    {class: 'calc__key', id: 'key_point', text: '.', onclick: 'printToDisplay()'},
+    {class: 'calc__key calc__key_color-orange', id: 'key_equals', text: '=', onclick: 'calculateAnswer()'},
+] ;
 
+//Функции
+const createKeypad = () => {
+    buttons.map((el) => {
+        let newButton = document.createElement('button');
+        newButton.className = el.class;
+        newButton.setAttribute('id', el.id);
+        newButton.setAttribute('onclick', el.onclick);
 
-    }
-})
+        newButton.textContent = el.text;
+        // newButton.addEventListener('click', determinationTypeOfKey(event))
+        calcKeypad.append(newButton);
 
-
-//обработка нажатий на карточку таска.
-FIELD_TASK.addEventListener('click', (e) => {
-    const pressBtn = e.target;
-    //если кнопка выполнить, то меняем стиль таска на "выполнено"
-    if (pressBtn.classList.contains('btn-action__img_done')) {
-        pressBtn.closest('.task-list__item').classList.toggle('item_done');
-    }
-    //если удалить то удаляем
-    if (pressBtn.classList.contains('btn-action__img_del')) {
-        pressBtn.closest('.task-list__item').outerHTML = '';
-        updateQuantitySelected();
-    }
-    //если кликнули на другие элементы Таска
-    if (pressBtn.classList.contains('item__action') ||
-        pressBtn.classList.contains('item__text') ||
-        pressBtn.classList.contains('task-list__item')) {
-
-        //записываем нажатый Таск в переменную
-        const checkedTaskEl = pressBtn.closest('.task-list__item');
-        document.getElementById(checkedTaskEl.dataset.taskId).click();
-        //передаем количество выбранных тасков
-        updateQuantitySelected();
-
-        //активируем верхнее меню управление
-        activeTaskListHeader();
-    }
+    })
+}
+createKeypad();
+const printToDisplay = () =>{
     
-    // если нажали на cancel отменить выбор
-    if (pressBtn.classList.contains('btn-action__img_cancel')) {
-        Array.from(document.querySelectorAll('.item__checkbox')).forEach(el => {
-            if (el.checked) {
-                el.click();
-            }
-        });
-        updateQuantitySelected();
-    }
-    //Выбрать всё
-    if (pressBtn.classList.contains('action-list__btn_choose-all')) {
-        Array.from(document.querySelectorAll('.item__checkbox')).forEach(el => {
-            if (!el.checked) {
-                el.click();
-            }
-        });
-        updateQuantitySelected();
-    }
-    //Удалить выбранное
-    if (pressBtn.classList.contains('action-list__btn_delete-all')) {
-        Array.from(document.querySelectorAll('.item__checkbox')).forEach(el => {
-            if (el.checked) {
-                el.closest('.task-list__item').outerHTML = '';
-            }
-        });
-        updateQuantitySelected();
-    }
-})
-
-
-//фнукиця для генерации id для Task
-function generateTaskID() {
-    return TASK_ID += 1;
 }
 
-//Функция для подсчета выбранных тасков и запись этих данных в хедере
-function updateQuantitySelected() {
-    const checkboxCollection = Array.from(document.querySelectorAll('.item__checkbox'));
-
-    const quntiteActiveEl = document.querySelector('.action-list__quntite');
-    const quntActive = checkboxCollection.reduce((quant, el) => {
-        if (el.checked) {
-            quant += 1;
-        }
-        return quant
-    }
-        , 0);
-    
-    if(quntActive === 0){
-        activeTaskListHeader();
-    }
-
-    quntiteActiveEl.textContent = `Выбрано ${quntActive}`
+const readMemory = () => {
 
 }
-//Функция активациии хедра таск листа, если выделен хотябы один таск
-function activeTaskListHeader() {
-    const checkboxCollection = Array.from(document.querySelectorAll('.item__checkbox'));
+const subtractFromMemory = () => {
 
-    const taskListHeader = document.querySelector('.task-list__header');
-
-    const isActive = checkboxCollection.find(el => el.checked);
-    if (isActive && !taskListHeader.classList.contains('_active')) {
-        taskListHeader.classList.add('_active');
-    }
-    if (!isActive) {
-        taskListHeader.classList.remove('_active');
-    }
 }
+const addToMemory = () => {
+
+}
+const delTheLastChar = () => {
+
+}
+const clearDisplay = () => {
+
+}
+const sqrtOfNumber = () => {
+
+}
+const calculateAnswer = () => {
+
+}
+//Утлиты для обработчиков
+const determinationTypeOfKey = (event) =>{
+    //определяем что за клавиша
+    //если цифра или базовые математические операторы, то пишем их на экране
+}
+
