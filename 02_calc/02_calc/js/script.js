@@ -1,9 +1,8 @@
 
-// Добавить слушатель клавиатуры
-// придумать граматное округление, наверное надо задать длину символа и если он будет очень длинный после нуля тогда уже и округлять
+// придумать грамотное округление, наверное надо задать длину символа и если он будет очень длинный после нуля тогда уже и округлять
 // Сделать блок истории
 //подумать как сделать чтобы при дабл клике по МРС не работал слушатель от одного клика опционально
-//пофиксить баг прикотором при удаление с помощью delTheLastChar последнего одного символа не появляется 0
+
 
 // Переменные
 let MEMORY = 0;
@@ -42,9 +41,7 @@ const buttons = [
 const calcKeypad = document.querySelector('.calc__keypad');
 const displayInput = document.querySelector('.calc__result');
 const lastExpress = document.querySelector('.calc__term');
-
-
-//Функции
+//Отрисовка клавиатуры
 const createKeypad = () => {
     buttons.map((el) => {
         let newButton = document.createElement('button');
@@ -59,6 +56,9 @@ const createKeypad = () => {
     })
 }
 createKeypad();
+
+//Функции
+//выводит символ на экран
 const printToDisplay = (value) => {
     //console.log(event.target.textContent);
     if (displayInput.value != 0) {
@@ -67,6 +67,7 @@ const printToDisplay = (value) => {
     }
     displayInput.value = value;
 }
+//выводит знак операции на экран
 const printToDisplayOperations = (operation) => {
     //если последний символ допустимый, то выводим операцию
     if ('+-÷×%'.indexOf(displayInput.value.slice(-1), 0) === -1) {
@@ -77,38 +78,47 @@ const printToDisplayOperations = (operation) => {
     delTheLastChar();
     printToDisplay(operation);
 }
+//Выводит значение из памяти на экран
 const readMemory = () => {
     if ('+-÷×%'.indexOf(displayInput.value.slice(-1), 0) !== -1)
         printToDisplay(MEMORY);
 }
+//отнимает от значения в памяти результат выражения на экран
 const subtractFromMemory = () => {
     MEMORY -= calculateAnswer(displayInput.value);
 }
+//добавляет результат выражения на экране к значению в памяти
 const addToMemory = () => {
     MEMORY += calculateAnswer(displayInput.value);
 }
+//Удаление последнего символа
 const delTheLastChar = () => {
     if (displayInput.value === '0') return;
+    if (displayInput.value.length === 1) return displayInput.value = '0';
     displayInput.value = displayInput.value.slice(0, -1);
 }
+// Очищение экрана
 const clearDisplay = () => {
     displayInput.value = '0';
 }
+//Считает квадратный корень
 const sqrtOfNumber = () => {
     lastExpress.textContent = `√(${displayInput.value})`;
     let resultInput = calculateAnswer(displayInput.value);
     clearDisplay();
     resultInput >= 0
-        ? printToDisplay(Math.sqrt(resultInput).toFixed(4))
+        ? printToDisplay(formatAnswer(Math.sqrt(resultInput)))
         : printToDisplay('Неверный ввод')
 }
+//Выводит ответ на экран
 const displayAnswer = () => {
     lastExpress.textContent = displayInput.value;
     // console.log(formatInput(displayInput.value));
     let result = calculateAnswer(displayInput.value);
     clearDisplay();
-    printToDisplay(result);
+    printToDisplay(formatAnswer(result));
 }
+//Клавиша +/- меняет знак выражения в инпуте
 const switchSign = () => {
     lastExpress.textContent = `negate(${displayInput.value})`;
     let numOfDisplay = calculateAnswer(displayInput.value);
@@ -117,18 +127,34 @@ const switchSign = () => {
         ? printToDisplay(`-${numOfDisplay}`)
         : printToDisplay(String(numOfDisplay).slice(1))
 }
+
 //Утилиты
+//Считает выражение
 const calculateAnswer = (exp) => {
     return eval(formatInput(exp))
 }
-const formatInput = (str) => {
-    return str.split('').map((el) => {
+//Меняет красивые знаки умножить и делить на нужные для расчета
+const formatInput = (inputValue) => {
+    return inputValue.split('').map((el) => {
         if (el === '×') return '*'
         if (el === '÷') return '/'
         return el
     }).join('');
 }
-
+// округляет не целые числа и делает чтобы большие числа не вылазили за экран
+const formatAnswer = (answer) => {
+    if(isFloat(answer)){
+        return answer.toFixed(2);
+    }
+    
+    // И надо подумать что делать с длинной инпута
+    // Чтобы числа не вылазили за экран
+    return answer;
+}
+//Проверка на целое число
+const isFloat = (num) => {
+    return Number(num) === num && num % 1 !== 0;
+}
 //Слушатели
 const keyMrc = document.querySelector('#key_mrc');
 const keyC = document.querySelector('#key_c-ce');
@@ -138,9 +164,28 @@ keyC.addEventListener('dblclick', () => {
     lastExpress.textContent = '';
     displayInput.value = '0';
 });
-// window.addEventListener('keydown', (e) => {
-//     // console.log(e.key);
-//     if (' 1234567890'.indexOf(e.key)){
-//         printToDisplay(e.key);
-//     } 
-// })
+//Считывание с клавиатуры
+window.addEventListener('keydown', (e) => {
+    //  console.log(e.key);
+    if ('1234567890.'.indexOf(e.key) !== -1){
+        printToDisplay(e.key);
+        return;
+    } 
+    if (('+-/*%').indexOf(e.key) !== -1){
+        printToDisplayOperations(e.key);
+        return;
+    }
+    if (e.key == 'Backspace'){
+        delTheLastChar();
+        return;
+    }
+    if (e.key === 'Enter'){
+        displayAnswer();
+        return;
+    }
+    if (e.key === 'Delete'){
+        clearDisplay();
+        return;
+    }
+
+});
