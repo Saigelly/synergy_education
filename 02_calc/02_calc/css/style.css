@@ -91,7 +91,7 @@ body{
     height: 30px;
 }
 .calc__display {
-    border: 1px solid red;
+    
     font-size: 22px;
     width: 90%;
 }
