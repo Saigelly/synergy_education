@@ -2,10 +2,14 @@
 // придумать грамотное округление, наверное надо задать длину символа и если он будет очень длинный после нуля тогда уже и округлять
 // Сделать блок истории
 //подумать как сделать чтобы при дабл клике по МРС не работал слушатель от одного клика опционально
-
+// когда из памяти достаем число
+//     Если последний символ знак, то просто достать или отрицательное достать в скобках
+//     Если нет то очистить экран и поставить число
+    
 
 // Переменные
-let MEMORY = 0;
+let Memory = 0;
+let maxSymbol = 40;
 const buttons = [
     { class: 'calc__key calc__key_color-red', id: 'key_mrc', text: 'MRC', onclick: 'readMemory()' },
     { class: 'calc__key calc__key_color-red', id: 'key_m-subtract', text: 'M-', onclick: 'subtractFromMemory()' },
@@ -37,6 +41,39 @@ const buttons = [
     { class: 'calc__key', id: 'key_point', text: '.', onclick: 'printToDisplay(".")' },
     { class: 'calc__key calc__key_color-orange', id: 'key_equals', text: '=', onclick: 'displayAnswer()' },
 ];
+const tableCharWidth = [
+{ fontSize: 40, widthChar: 25 },
+{ fontSize: 39, widthChar: 25 },
+{ fontSize: 38, widthChar: 24 },
+{ fontSize: 37, widthChar: 23 },
+{ fontSize: 36, widthChar: 23 },
+{ fontSize: 35, widthChar: 22 },
+{ fontSize: 34, widthChar: 22 },
+{ fontSize: 33, widthChar: 21 },
+{ fontSize: 32, widthChar: 20 },
+{ fontSize: 31, widthChar: 20 },
+{ fontSize: 30, widthChar: 19 },
+{ fontSize: 29, widthChar: 18 },
+{ fontSize: 28, widthChar: 18 },
+{ fontSize: 27, widthChar: 17 },
+{ fontSize: 26, widthChar: 16 },
+{ fontSize: 25, widthChar: 16 },
+{ fontSize: 24, widthChar: 15 },
+{ fontSize: 23, widthChar: 15 },
+{ fontSize: 22, widthChar: 14 },
+{ fontSize: 21, widthChar: 13 },
+{ fontSize: 20, widthChar: 13 },
+{ fontSize: 19, widthChar: 12 },
+{ fontSize: 18, widthChar: 11 },
+{ fontSize: 17, widthChar: 11 },
+{ fontSize: 16, widthChar: 10 },
+{ fontSize: 15, widthChar: 10 },
+{ fontSize: 14, widthChar: 9 },
+{ fontSize: 13, widthChar: 8 },
+{ fontSize: 12, widthChar: 8 },
+{ fontSize: 11, widthChar: 7 },
+{ fontSize: 10, widthChar: 6 }
+]
 //Объекты из потока
 const calcKeypad = document.querySelector('.calc__keypad');
 const displayInput = document.querySelector('.calc__result');
@@ -56,6 +93,20 @@ const createKeypad = () => {
     })
 }
 createKeypad();
+
+const maxSymbolToDisplay = () => {
+    // debugger;
+    let inputOptions = getComputedStyle(displayInput);
+    maxSymbol = Math.floor(Number(inputOptions.width.slice(0,-2)) / tableCharWidth.find(item => item.fontSize + 'px' === inputOptions.fontSize).widthChar);
+    //Функция проверяет ширину инпута и делит её на ширину одного символа
+    //возвращает максимальное число символов в инпуте
+}
+maxSymbolToDisplay();
+
+const calcFontSize = (el) =>{
+    return Number(getComputedStyle(el).fontSize.slice(0, -2))
+}
+let fontSizeInput = calcFontSize(displayInput);
 
 //Функции
 //выводит символ на экран
@@ -81,15 +132,15 @@ const printToDisplayOperations = (operation) => {
 //Выводит значение из памяти на экран
 const readMemory = () => {
     if ('+-÷×%'.indexOf(displayInput.value.slice(-1), 0) !== -1)
-        printToDisplay(MEMORY);
+        printToDisplay(Memory);
 }
 //отнимает от значения в памяти результат выражения на экран
 const subtractFromMemory = () => {
-    MEMORY -= calculateAnswer(displayInput.value);
+    Memory -= calculateAnswer(displayInput.value);
 }
 //добавляет результат выражения на экране к значению в памяти
 const addToMemory = () => {
-    MEMORY += calculateAnswer(displayInput.value);
+    Memory += calculateAnswer(displayInput.value);
 }
 //Удаление последнего символа
 const delTheLastChar = () => {
@@ -141,24 +192,44 @@ const formatInput = (inputValue) => {
         return el
     }).join('');
 }
+//Узнает размер шрифта
+
 // округляет не целые числа и делает чтобы большие числа не вылазили за экран
 const formatAnswer = (answer) => {
-    if(isFloat(answer)){
-        return answer.toFixed(2);
+    displayInput.style.fontSize = '';
+    if (isFloat(answer)) {
+        answer = answer.toFixed(2);
     }
-    
+
+    while (!isFit(answer)) {
+        reduceFontSize(displayInput);
+        maxSymbolToDisplay();
+    }
+    fontSizeInput = 40;
+    return answer;
+
     // И надо подумать что делать с длинной инпута
     // Чтобы числа не вылазили за экран
-    return answer;
+
 }
 //Проверка на целое число
 const isFloat = (num) => {
     return Number(num) === num && num % 1 !== 0;
 }
+ //проверяет влазит ли число в инпут
+const isFit = (str) => {
+    return String(str).length <= maxSymbol
+}
+//функция уменьшает размер шрифта элемента
+const reduceFontSize = (el) => {
+    fontSizeInput -= 1;
+    el.style.fontSize = fontSizeInput + 'px';
+    
+}
 //Слушатели
 const keyMrc = document.querySelector('#key_mrc');
 const keyC = document.querySelector('#key_c-ce');
-keyMrc.addEventListener('dblclick', () => MEMORY = 0);
+keyMrc.addEventListener('dblclick', () => Memory = 0);
 keyC.addEventListener('dblclick', () => {
     MEMORY = 0;
     lastExpress.textContent = '';
@@ -167,25 +238,26 @@ keyC.addEventListener('dblclick', () => {
 //Считывание с клавиатуры
 window.addEventListener('keydown', (e) => {
     //  console.log(e.key);
-    if ('1234567890.'.indexOf(e.key) !== -1){
+    if ('1234567890.'.indexOf(e.key) !== -1) {
         printToDisplay(e.key);
         return;
-    } 
-    if (('+-/*%').indexOf(e.key) !== -1){
+    }
+    if (('+-/*%').indexOf(e.key) !== -1) {
         printToDisplayOperations(e.key);
         return;
     }
-    if (e.key == 'Backspace'){
+    if (e.key == 'Backspace') {
         delTheLastChar();
         return;
     }
-    if (e.key === 'Enter'){
+    if (e.key === 'Enter') {
         displayAnswer();
         return;
     }
-    if (e.key === 'Delete'){
+    if (e.key === 'Delete') {
         clearDisplay();
         return;
     }
 
 });
+window.addEventListener('resize', maxSymbolToDisplay);
