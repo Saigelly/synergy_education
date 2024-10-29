@@ -24,15 +24,38 @@
                     <p class="calc__term"></p>
                     <div class="calc__result-window">
                         <p class="calc__equals">=</p>
-                        <input type="text" class="calc__result" value="0" disabled >
+                        <input type="text" class="calc__result" value="0" disabled>
                     </div>
                 </div>
             </header>
             <div class="calc__keypad"></div>
         </section>
-        <!-- <section class="history">
+        <section class="sub-tools">
+            <input type="radio" name="sub-tools" id="history" checked>
+            <input type="radio" name="sub-tools" id="memory">
 
-        </section> -->
+            <div class="sub-tools__nav">
+                <label for="history" class="sub-tools__label sub-tools__label_active">Журнал</label>
+                <label for="memory" class="sub-tools__label">Память</label>
+            </div>
+
+            <div class="sub-tools__tabs">
+                <div class="sub-tools__history history _show">
+                    <ul class="history__list">
+                       
+                    </ul>
+                    <img src="./img/delete.png" class="history__clear" alt="clear-list"></img>
+                </div>
+                <div class="sub-tools__history memory">
+                    <ul class="history__list">
+
+                    </ul>
+                    
+                </div>
+            </div>
+
+
+        </section>
     </div>
     <script src="js/script.js"></script>
 </body>

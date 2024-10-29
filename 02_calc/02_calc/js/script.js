@@ -62,8 +62,8 @@ createKeypad();
 //выводит символ на экран
 const printToDisplay = (value) => {
     //console.log(event.target.textContent);
-    console.log(value)
-    if (displayInput.value == prevResult){
+
+    if (displayInput.value == prevResult) {
         lastExpress.textContent = ''
         displayInput.value = value;
         prevResult = '0'
@@ -75,7 +75,7 @@ const printToDisplay = (value) => {
         return;
     }
     displayInput.value = value;
-    
+
 }
 //выводит знак операции на экран
 const printToDisplayOperations = (operation) => {
@@ -113,25 +113,33 @@ const clearDisplay = () => {
 }
 //Считает квадратный корень
 const sqrtOfNumber = () => {
-    lastExpress.textContent = `√(${displayInput.value})`;
+    // debugger;
+    let exp = `√(${displayInput.value})`
+
     let resultInput = calculateAnswer(displayInput.value);
     clearDisplay();
-    
+
     resultInput >= 0
         ? printToDisplay(formatAnswer(Math.sqrt(resultInput)))
         : printToDisplay('Неверный ввод')
-    
+
+    lastExpress.textContent = exp;
+    createHistoryItem(exp, String(resultInput));
     prevResult = displayInput.value;
 }
 //Выводит ответ на экран
 const displayAnswer = () => {
-    lastExpress.textContent = displayInput.value;
+    // debugger;
+    let exp = displayInput.value;
+    
     // console.log(formatInput(displayInput.value));
     let result = calculateAnswer(displayInput.value);
     clearDisplay();
     
     prevResult = result; // потом prevResult надобудет поменять на ссылку в блоке истории с предыдщем выражением
     printToDisplay(formatAnswer(result));
+    lastExpress.textContent = exp;
+    createHistoryItem(exp, String(result));
 }
 //Клавиша +/- меняет знак выражения в инпуте
 const switchSign = () => {
@@ -158,10 +166,10 @@ const formatInput = (inputValue) => {
 }
 // округляет не целые числа и делает чтобы большие числа не вылазили за экран
 const formatAnswer = (answer) => {
-    if(isFloat(answer)){
+    if (isFloat(answer)) {
         return answer.toFixed(2);
     }
-    
+
     // И надо подумать что делать с длинной инпута
     // Чтобы числа не вылазили за экран
     return answer;
@@ -182,25 +190,93 @@ keyC.addEventListener('dblclick', () => {
 //Считывание с клавиатуры
 window.addEventListener('keydown', (e) => {
     //  console.log(e.key);
-    if ('1234567890.'.indexOf(e.key) !== -1){
+    if ('1234567890.'.indexOf(e.key) !== -1) {
         printToDisplay(e.key);
         return;
-    } 
-    if (('+-/*%').indexOf(e.key) !== -1){
+    }
+    if (('+-/*%').indexOf(e.key) !== -1) {
         printToDisplayOperations(e.key);
         return;
     }
-    if (e.key == 'Backspace'){
+    if (e.key == 'Backspace') {
         delTheLastChar();
         return;
     }
-    if (e.key === 'Enter'){
+    if (e.key === 'Enter') {
         displayAnswer();
         return;
     }
-    if (e.key === 'Delete'){
+    if (e.key === 'Delete') {
         clearDisplay();
         return;
     }
 
 });
+
+
+
+// блок дополнительных инструментов
+let historyItems = [];
+
+const historyList = document.querySelector('.history__list');
+const btnClearHistory = document.querySelector('.history__clear');
+const labelHistory = document.querySelector('[for="history"]');
+const tabHistory = document.querySelector('.history');
+const labelMemory = document.querySelector('[for="memory"]');
+const tabMemory = document.querySelector('.memory');
+
+const createHistoryItem = (exp, result) => {
+    let objItem = {
+        id: historyItems.length,
+        exp,
+        result
+    }
+    historyItems.push(objItem);
+
+    console.log('exp ', objItem.exp);
+    console.log('result ', objItem.result);
+
+    elLi = document.createElement('li');
+    elTitle = document.createElement('h3');
+    elP = document.createElement('p');
+
+    elLi.className = 'history__item item';
+    elTitle.className = 'item__express';
+    elP.className = 'item__result';
+    
+    elLi.setAttribute('id', objItem.id);
+    // if (exp === '') exp = result;
+    elTitle.textContent = `${exp} =`
+
+    elP.textContent = result;
+
+    historyList.prepend(elLi);
+    elLi.append(elTitle);
+    elLi.append(elP);
+
+}
+const clearHistory = () => {
+    historyList.innerHTML = '';
+    historyItems = [];
+}
+const switchTab = () => {
+    labelHistory.classList.toggle('sub-tools__label_active');
+    labelMemory.classList.toggle('sub-tools__label_active');
+    tabHistory.classList.toggle('_show');
+    tabMemory.classList.toggle('_show');
+}
+const displayHistoryItem = (e) => {
+    let clickItem = e.target.closest('.item');
+    // console.log(clickItem)
+    data = historyItems.find((item) => item.id == clickItem.id);
+    // console.log (data);
+    displayInput.value = data.result;
+    lastExpress.textContent = data.exp;
+    prevResult = data.result;
+}
+
+document.querySelectorAll('input[type="radio"][name="sub-tools"]').forEach(radio => {
+    radio.addEventListener('change', switchTab);
+});
+historyList.addEventListener('click', displayHistoryItem);
+btnClearHistory.addEventListener('click', clearHistory);
