@@ -37,6 +37,7 @@ const buttons = [
     { class: 'calc__key', id: 'key_point', text: '.', onclick: 'printToDisplay(".")' },
     { class: 'calc__key calc__key_color-orange', id: 'key_equals', text: '=', onclick: 'displayAnswer()' },
 ];
+let prevResult = '0'; //помагает сбросить экран, если после получения ответа нажимаем цифру
 //Объекты из потока
 const calcKeypad = document.querySelector('.calc__keypad');
 const displayInput = document.querySelector('.calc__result');
@@ -61,11 +62,20 @@ createKeypad();
 //выводит символ на экран
 const printToDisplay = (value) => {
     //console.log(event.target.textContent);
+    console.log(value)
+    if (displayInput.value == prevResult){
+        lastExpress.textContent = ''
+        displayInput.value = value;
+        prevResult = '0'
+        return;
+    }
     if (displayInput.value != 0) {
         displayInput.value += value;
+        prevResult = '0'
         return;
     }
     displayInput.value = value;
+    
 }
 //выводит знак операции на экран
 const printToDisplayOperations = (operation) => {
@@ -106,9 +116,12 @@ const sqrtOfNumber = () => {
     lastExpress.textContent = `√(${displayInput.value})`;
     let resultInput = calculateAnswer(displayInput.value);
     clearDisplay();
+    
     resultInput >= 0
         ? printToDisplay(formatAnswer(Math.sqrt(resultInput)))
         : printToDisplay('Неверный ввод')
+    
+    prevResult = displayInput.value;
 }
 //Выводит ответ на экран
 const displayAnswer = () => {
@@ -116,6 +129,8 @@ const displayAnswer = () => {
     // console.log(formatInput(displayInput.value));
     let result = calculateAnswer(displayInput.value);
     clearDisplay();
+    
+    prevResult = result; // потом prevResult надобудет поменять на ссылку в блоке истории с предыдщем выражением
     printToDisplay(formatAnswer(result));
 }
 //Клавиша +/- меняет знак выражения в инпуте
