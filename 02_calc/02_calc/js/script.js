@@ -1,17 +1,15 @@
-
+//Сделать прокрутку дополнительных секций
 // придумать грамотное округление, наверное надо задать длину символа и если он будет очень длинный после нуля тогда уже и округлять
-// Сделать блок истории
+
 //подумать как сделать чтобы при дабл клике по МРС не работал слушатель от одного клика опционально
 //проверку на последнйи символ переделать в функцию isOperation
 
-
-//Сделать, чтобы если нету ничего в памяти, то при первом нажатие на М= или М- создавалась новая ячейка
 //Починить баг с квадартным корнем, который в историю выводит число из которого брала корень
 //Починить баг при котором вылетает ошибка при расчете если в конце знак действия
 //Починить баг при котором вылетает ошибка при записи в память если в инпуте "невернный ввод"
 
 // Переменные
-let MEMORY = 0;
+
 const buttons = [
     { class: 'calc__key calc__key_blank', id: 'key_blank1', text: '', onclick: '' },
     { class: 'calc__key calc__key_blank', id: 'key_blank2', text: '', onclick: '' },
@@ -21,7 +19,7 @@ const buttons = [
     { class: 'calc__key calc__key_color-red', id: 'key_mrc', text: 'MRC', onclick: 'readMemory()' },
     { class: 'calc__key calc__key_color-red', id: 'key_m-subtract', text: 'M-', onclick: 'subtractFromLastMemory()' },
     { class: 'calc__key calc__key_color-red', id: 'key_m-add', text: 'M+', onclick: 'addToLastMemory()' },
-    { class: 'calc__key calc__key_color-red', id: 'key_msave', text: 'MS', onclick: 'createMemoryItem()' },
+    { class: 'calc__key calc__key_color-red', id: 'key_msave', text: 'MS', onclick: 'createMemoryItem(displayInput.value)' },
 
     { class: 'calc__key calc__key_color-orange', id: 'key_c-ce', text: 'C/CE', onclick: 'clearDisplay()' },
     { class: 'calc__key calc__key_color-orange', id: 'key_sqrt', text: '√', onclick: 'sqrtOfNumber()' },
@@ -48,13 +46,12 @@ const buttons = [
     { class: 'calc__key', id: 'key_point', text: '.', onclick: 'printToDisplay(".")' },
     { class: 'calc__key calc__key_color-orange', id: 'key_equals', text: '=', onclick: 'displayAnswer()' },
 ];
+let historyItems = [];
+let memoryItems = [];
 let prevResult = '0'; //помагает сбросить экран, если после получения ответа нажимаем цифру
-//Объекты из потока
-const calcKeypad = document.querySelector('.calc__keypad');
-const displayInput = document.querySelector('.calc__result');
-const lastExpress = document.querySelector('.calc__term');
 
 //Отрисовка клавиатуры
+const calcKeypad = document.querySelector('.calc__keypad');
 const createKeypad = () => {
     buttons.map((el) => {
         let newButton = document.createElement('button');
@@ -69,6 +66,25 @@ const createKeypad = () => {
     })
 }
 createKeypad();
+
+//Объекты из потока
+//Связанные с основной частью калькулятор
+const displayInput = document.querySelector('.calc__result');
+const lastExpress = document.querySelector('.calc__term');
+const keyMrc = document.querySelector('#key_mrc');
+const keyC = document.querySelector('#key_c-ce');
+//Связанные с блоком истории
+const historyList = document.querySelector('#history-list');
+const btnClearHistory = document.querySelector('#clear-history');
+const labelHistory = document.querySelector('[for="history"]');
+const tabHistory = document.querySelector('.history');
+const historyDescr = document.querySelector('#history-descr');
+//Связанные с блоком памяти
+const memoryList = document.querySelector('#memory-list');
+const btnClearMemory = document.querySelector('#clear-memory');
+const labelMemory = document.querySelector('[for="memory"]');
+const tabMemory = document.querySelector('.memory');
+const memoryDescr = document.querySelector('#memory-descr');
 
 //Функции
 //выводит символ на экран
@@ -106,25 +122,9 @@ const delTheLastChar = () => {
     if (displayInput.value.length === 1) return displayInput.value = '0';
     displayInput.value = displayInput.value.slice(0, -1);
 }
-// Очищение экрана
+// Очистка импута
 const clearDisplay = () => {
     displayInput.value = '0';
-}
-//Считает квадратный корень
-const sqrtOfNumber = () => {
-    // debugger;
-    let exp = `√(${displayInput.value})`
-
-    let resultInput = calculateAnswer(displayInput.value);
-    clearDisplay();
-
-    resultInput >= 0
-        ? printToDisplay(formatAnswer(Math.sqrt(resultInput)))
-        : printToDisplay('Неверный ввод')
-
-    lastExpress.textContent = exp;
-    createHistoryItem(exp, String(resultInput));
-    prevResult = displayInput.value;
 }
 //Выводит ответ на экран
 const displayAnswer = () => {
@@ -149,91 +149,29 @@ const switchSign = () => {
         ? printToDisplay(`-${numOfDisplay}`)
         : printToDisplay(String(numOfDisplay).slice(1))
 }
+//Считает квадратный корень
+const sqrtOfNumber = () => {
+    // debugger;
+    let exp = `√(${displayInput.value})`
 
-//Утилиты
-//Считает выражение
-const calculateAnswer = (exp) => {
-    return eval(formatInput(exp))
+    let resultInput = calculateAnswer(displayInput.value);
+    clearDisplay();
+
+    resultInput >= 0
+        ? printToDisplay(formatAnswer(Math.sqrt(resultInput)))
+        : printToDisplay('Неверный ввод')
+
+    lastExpress.textContent = exp;
+    createHistoryItem(exp, String(resultInput));
+    prevResult = displayInput.value;
 }
-//Меняет красивые знаки умножить и делить на нужные для расчета
-const formatInput = (inputValue) => {
-    return inputValue.split('').map((el) => {
-        if (el === '×') return '*'
-        if (el === '÷') return '/'
-        return el
-    }).join('');
-}
-// округляет не целые числа и делает чтобы большие числа не вылазили за экран
-const formatAnswer = (answer) => {
-    if (isFloat(answer)) {
-        return answer.toFixed(2);
-    }
-
-    // И надо подумать что делать с длинной инпута
-    // Чтобы числа не вылазили за экран
-    return answer;
-}
-//Проверка на целое число
-const isFloat = (num) => {
-    return Number(num) === num && num % 1 !== 0;
-}
-
-//Считывание с клавиатуры
-window.addEventListener('keydown', (e) => {
-    //  console.log(e.key);
-    if ('1234567890.'.indexOf(e.key) !== -1) {
-        printToDisplay(e.key);
-        return;
-    }
-    if (('+-/*%').indexOf(e.key) !== -1) {
-        printToDisplayOperations(e.key);
-        return;
-    }
-    if (e.key == 'Backspace') {
-        delTheLastChar();
-        return;
-    }
-    if (e.key === 'Enter') {
-        displayAnswer();
-        return;
-    }
-    if (e.key === 'Delete') {
-        clearDisplay();
-        return;
-    }
-
-});
-
-
-
-// блок дополнительных инструментов`
-//Переменные
-let historyItems = [];
-let memoryItems = [];
-
-//Блоки из потока
-const historyList = document.querySelector('#history-list');
-const btnClearHistory = document.querySelector('#clear-history');
-const labelHistory = document.querySelector('[for="history"]');
-const tabHistory = document.querySelector('.history');
-
-const memoryList = document.querySelector('#memory-list');
-const btnClearMemory = document.querySelector('#clear-memory');
-const labelMemory = document.querySelector('[for="memory"]');
-const tabMemory = document.querySelector('.memory');
-const keyMrc = document.querySelector('#key_mrc');
-const keyC = document.querySelector('#key_c-ce');
-
-//Функции
-// Смена дополнительного инструмента
-const switchTab = () => {
-    labelHistory.classList.toggle('sub-tools__label_active');
-    labelMemory.classList.toggle('sub-tools__label_active');
-    tabHistory.classList.toggle('_show');
-    tabMemory.classList.toggle('_show');
-}
+//Функции блока "History"
 //Создать элемент в блок истории
 const createHistoryItem = (exp, result) => {
+    if (!historyItems.length) {
+        historyDescr.classList.remove('_show');
+    }
+
     let objItem = {
         id: historyItems.length,
         exp,
@@ -274,21 +212,26 @@ const displayHistoryItem = (e) => {
     prevResult = data.result;
 }
 //Очистка истории
-const clearHistory = () => {
+const clearHistoryList = () => {
     historyList.innerHTML = '';
     historyItems = [];
+    historyDescr.classList.add('_show');
 }
+//Функции блока "Memory" и клавиш клавиатуры связанных с "Memory"
 //Создание новой ячейки памяти
-const createMemoryItem = () => {
+const createMemoryItem = (value) => {
     // <h3 class="item__title">25</h3>
     // <div class="item__buttons">
     //     <button class="item__btn" onclick = "clearCurrentMemory()">MC</button>
     //     <button class="item__btn onclick = "addToCurrentMemory()">M+</button>
     //     <button class="item__btn onclick = "subtractFromCurrentMemory">M-</button>
     // </div>
+    if (!memoryItems.length) {
+        memoryDescr.classList.remove('_show');
+    }
     let objItem = {
         id: `memory-${memoryItems.length}`,
-        num: calculateAnswer(displayInput.value)
+        num: calculateAnswer(value)
     }
     memoryItems.push(objItem);
 
@@ -308,7 +251,7 @@ const createMemoryItem = () => {
     const btnClearMemory = elButton.cloneNode();
     const btnAddMemory = elButton.cloneNode();
     const btnSubtractMemory = elButton.cloneNode();
-   
+
 
     elLi.setAttribute('id', objItem.id);
     elTitle.setAttribute('id', `${objItem.id}-num`);
@@ -336,10 +279,10 @@ const readCurrentMemory = (e) => {
     // console.log(clickItem)
     data = memoryItems.find((item) => item.id == clickItem.id);
     // console.log (data);
-    if('+-÷×%'.indexOf(displayInput.value.slice(-1), 0) === -1){
+    if ('+-÷×%'.indexOf(displayInput.value.slice(-1), 0) === -1) {
         displayInput.value = data.num;
         prevResult = data.num;
-        return; 
+        return;
     }
     printToDisplay(data.num);
 }
@@ -365,6 +308,7 @@ const deleteCurrentMemory = (e) => {
     const memoryItem = e.target.closest('.item');
     memoryItems.splice(memoryItems.findIndex((item => item.id === memoryItem.id)), 1);
     memoryItem.remove();
+    if(!memoryItems.length) memoryDescr.classList.add('_show');
 }
 //Вывести значение последней добавленной памяти на экран
 const readMemory = () => {
@@ -378,45 +322,112 @@ const readMemory = () => {
 }
 //отнять от значения последней добавленной памяти результат выражения на экране
 const subtractFromLastMemory = () => {
-    if(memoryItems.length){
+    if (!memoryItems.length) {
+        createMemoryItem(0 - Number(displayInput.value));
+        return;
+    }
+    
+    if (memoryItems.length) {
         const lastMemory = getLastMemoryObj();
         lastMemory.num = Number(lastMemory.num) - calculateAnswer(displayInput.value);
         memoryList.querySelector(`#${lastMemory.id}-num`).textContent = lastMemory.num;
     }
     return;
 }
-//тнять к значению последней добавленной памяти результат выражения на экране
+//прибавить к значению последней добавленной памяти результат выражения на экране
 const addToLastMemory = () => {
-    if(memoryItems.length){
-        const lastMemory = getLastMemoryObj();
-        lastMemory.num = Number(lastMemory.num) + calculateAnswer(displayInput.value);
-        memoryList.querySelector(`#${lastMemory.id}-num`).textContent = lastMemory.num;
+    if (!memoryItems.length) {
+        createMemoryItem(displayInput.value);
+        return;
     }
-    return;
+    const lastMemory = getLastMemoryObj();
+    lastMemory.num = Number(lastMemory.num) + calculateAnswer(displayInput.value);
+    memoryList.querySelector(`#${lastMemory.id}-num`).textContent = lastMemory.num;
 }
 //Очистить всю память
 const clearMemoryList = () => {
     memoryList.innerHTML = '';
     memoryItems = [];
+    memoryDescr.classList.add('_show');
 }
 
 //Утилиты
 //возвращает объект последней добавленной памяти из массива
-const getLastMemoryObj = () =>{
+const getLastMemoryObj = () => {
     return memoryItems[memoryItems.length - 1];
 }
+//Принимает выражение и возвращает посчитанный ответ
+const calculateAnswer = (exp) => {
+    return eval(formatInput(String(exp)))
+}
+//Смена дополнительного инструмента
+const switchTab = () => {
+    labelHistory.classList.toggle('sub-tools__label_active');
+    labelMemory.classList.toggle('sub-tools__label_active');
+    tabHistory.classList.toggle('_show');
+    tabMemory.classList.toggle('_show');
+}
+//Меняет красивые знаки умножить и делить на нужные для расчета
+const formatInput = (inputValue) => {
+    return inputValue.split('').map((el) => {
+        if (el === '×') return '*'
+        if (el === '÷') return '/'
+        return el
+    }).join('');
+}
+// округляет нецелые числа и делает чтобы большие числа не вылазили за экран
+const formatAnswer = (answer) => {
+    if (isFloat(answer)) {
+        return answer.toFixed(2);
+    }
+    //разрабатывается в другом бранче
+    // И надо подумать что делать с длинной инпута
+    // Чтобы числа не вылазили за экран
+    return answer;
+}
+//Проверка на целое число
+const isFloat = (num) => {
+    return Number(num) === num && num % 1 !== 0;
+}
+
 
 //Слушатели
 memoryList.addEventListener('click', readCurrentMemory);
 historyList.addEventListener('click', displayHistoryItem);
-btnClearHistory.addEventListener('click', clearHistory);
-keyMrc.addEventListener('dblclick', clearMemoryList);
+btnClearHistory.addEventListener('click', clearHistoryList);
 btnClearMemory.addEventListener('click', clearMemoryList);
+keyMrc.addEventListener('dblclick', clearMemoryList);
 keyC.addEventListener('dblclick', () => {
     clearMemoryList();
     lastExpress.textContent = '';
     displayInput.value = '0';
 });
+//Добавляет возможность переключения табиков
 document.querySelectorAll('input[type="radio"][name="sub-tools"]').forEach(radio => {
     radio.addEventListener('change', switchTab);
+});
+//Считывание с клавиатуры
+window.addEventListener('keydown', (e) => {
+    //  console.log(e.key);
+    if ('1234567890.'.indexOf(e.key) !== -1) {
+        printToDisplay(e.key);
+        return;
+    }
+    if (('+-/*%').indexOf(e.key) !== -1) {
+        printToDisplayOperations(e.key);
+        return;
+    }
+    if (e.key == 'Backspace') {
+        delTheLastChar();
+        return;
+    }
+    if (e.key === 'Enter') {
+        displayAnswer();
+        return;
+    }
+    if (e.key === 'Delete') {
+        clearDisplay();
+        return;
+    }
+
 });

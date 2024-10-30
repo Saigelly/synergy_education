@@ -1,22 +1,38 @@
 /*ОБНУЛЕНИЕ*/
 
-*{
+* {
     padding: 0;
     margin: 0;
     border: 0;
 }
 
-*,*:before,*:after{
+*,
+*:before,
+*:after {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-:focus,:active{outline: none;}
-a:focus,a:active{outline: none;}
 
-nav,footer,header,aside{display: block;}
+:focus,
+:active {
+    outline: none;
+}
 
-html,body{
+a:focus,
+a:active {
+    outline: none;
+}
+
+nav,
+footer,
+header,
+aside {
+    display: block;
+}
+
+html,
+body {
     height: 100%;
     width: 100%;
     font-size: 100%;
@@ -27,35 +43,71 @@ html,body{
     -webkit-text-size-adjust: 100%;
 }
 
-input,button,textarea{font-family: inherit;}
+input,
+button,
+textarea {
+    font-family: inherit;
+}
 
-input::-ms-clear{display: none;}
-button{cursor: pointer;}
-button::-moz-focus-inner{padding: 0;border: 0;}
-a, a:visited{
+input::-ms-clear {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+a,
+a:visited {
     text-decoration: none;
-    color: inherit;}
-a:hover{text-decoration: none;}
-ul li{list-style: none;}
-img{vertical-align: top;}
+    color: inherit;
+}
 
-h1, h2, h3, h4, h5, h6{font-size: inherit; font-weight: 400;}
+a:hover {
+    text-decoration: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+img {
+    vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: 400;
+}
+
 /* ------------------------------- */
 
-body{
+body {
     background: #E5E5E5;
     font-family: "Open Sans", sans-serif;
     font-size: 26px;
 }
+
 .wrapper {
     display: flex;
     padding: 10px;
     margin: 0 auto;
     max-width: 75%;
 }
+
 .calc {
     /* border: 1px solid grey; */
-    
+
     /* flex: 1 0 100%; */
     position: relative;
     z-index: 1;
@@ -63,11 +115,12 @@ body{
     flex: 1 1 60%;
     display: flex;
     flex-direction: column;
-    
-    background: rgb(254,254,254);
-    background: linear-gradient(266deg, rgba(254,254,254,1) 0%, rgba(249,249,249,1) 13%, rgba(243,243,243,1) 33%, rgba(229,229,229,1) 100%);
+
+    background: rgb(254, 254, 254);
+    background: linear-gradient(266deg, rgba(254, 254, 254, 1) 0%, rgba(249, 249, 249, 1) 13%, rgba(243, 243, 243, 1) 33%, rgba(229, 229, 229, 1) 100%);
     border-radius: 40px;
 }
+
 .calc__header {
     /* border: 1px solid yellow; */
 
@@ -81,29 +134,33 @@ body{
     padding: 5%;
     min-height: 30vh;
 }
+
 .toggle {
     width: 122px;
     height: 44px;
     border: 1px solid yellow;
     margin: auto;
 }
-.calc__toggle {
-}
+
+.calc__toggle {}
+
 .calc__history {
     width: 30px;
     height: 30px;
 }
+
 .calc__display {
-    
+
     font-size: 22px;
     width: 90%;
-    
+
 }
+
 .calc__term {
     text-align: right;
     color: #3737377e;
     font-weight: 500;
-    
+
     height: 35px;
     line-height: 35px;
 }
@@ -113,6 +170,7 @@ body{
     justify-content: center;
     align-items: center;
 }
+
 .calc__equals {
     font-size: 26px;
     font-weight: 600;
@@ -121,8 +179,9 @@ body{
     min-height: 50px;
     text-align: center;
     line-height: 50px;
-  
+
 }
+
 .calc__result {
     display: block;
     text-align: right;
@@ -132,8 +191,9 @@ body{
     font-size: 40px;
     min-width: 20px;
     flex: 1 1 auto;
-    
+
 }
+
 .calc__keypad {
     display: flex;
     justify-content: center;
@@ -143,7 +203,7 @@ body{
     gap: 10px;
     padding: 5%;
     /* background: linear-gradient(45deg, rgba(158,232,255,1) 2%, rgba(90,206,255,1) 28%, rgba(121,175,255,1) 65%, rgba(45,95,222,1) 100%);; */
-    background: linear-gradient(152deg, rgba(174,219,252,1) 0%, rgba(145,198,254,1) 80%);
+    background: linear-gradient(152deg, rgba(174, 219, 252, 1) 0%, rgba(145, 198, 254, 1) 80%);
     border-radius: 0 0 40px 40px;
 }
 
@@ -162,35 +222,41 @@ body{
 
 }
 
-.calc__key_color-orange{
+.calc__key_color-orange {
     background-color: #ffd56969;
 }
-.calc__key_color-red{
+
+.calc__key_color-red {
     background-color: #FF866969;
 }
 
-.calc__key:hover{
+.calc__key:hover {
     box-shadow: 0 3px 15px rgb(0, 0, 0, 5%);
 }
-.calc__key:active{
+
+.calc__key:active {
     background-color: #70D4FF9f;
 }
-.calc__key_color-orange:active{
+
+.calc__key_color-orange:active {
     background-color: #ffd5699f;
 }
-.calc__key_color-red:active{
+
+.calc__key_color-red:active {
     background-color: #FF86699f;
 }
-.calc__key_blank{
+
+.calc__key_blank {
     visibility: hidden;
     cursor: auto;
     pointer-events: none;
 }
+
 /* Блок инстурементов (история) */
 .sub-tools {
     flex: 1 0 40%;
     min-height: 100%;
-    
+
     display: flex;
     flex-direction: column;
 
@@ -204,42 +270,55 @@ body{
     padding-left: 60px;
     padding-top: 50px;
     padding-right: 10px;
-    
+
     z-index: 0;
 }
+
 /* .history {
     
 
 } */
 #history,
-#memory{
+#memory {
     position: absolute;
     visibility: hidden;
 }
+
 .sub-tools__nav {
     flex: 0 0 45px;
     display: flex;
     justify-content: flex-start;
     gap: 30px;
 }
+
 .sub-tools__label {
     transition: all .3s ease;
     cursor: pointer;
     margin-bottom: 5px;
 }
+
 .sub-tools__label:hover {
     color: #0000005b;
     box-shadow: 0 10px 0 -8px seagreen;
 }
-.sub-tools__label_active{
+
+.sub-tools__label_active {
     box-shadow: 0 2px 0 rgb(123, 46, 139);
-    background-color: red;
-}
-.sub-tools__tabs {
-    flex: 1 1 auto;
     
 }
 
+.sub-tools__tabs {
+    flex: 1 1 auto;
+
+}
+.sub-tools__descr {
+    display: none;
+    pointer-events: none;
+    color: #373737b4;
+    justify-content: flex-end;
+    margin-top: 10px;
+    font-size: 20px;
+}
 .sub-tools__tab-content {
     display: none;
     flex-direction: column;
@@ -247,6 +326,7 @@ body{
     height: 100%;
     width: 100%;
 }
+
 .sub-tools__list {
     width: 100%;
     text-align: right;
@@ -257,19 +337,22 @@ body{
     margin-bottom: 15px;
     transition: all 0.2s ease;
 }
-.item:hover{
+
+.item:hover {
     background-color: rgb(206, 206, 206);
     cursor: pointer;
 }
+
 .item__express {
     margin-bottom: 5px;
     color: #373737b4;
 }
-.item__result
- {
+
+.item__result {
     font-weight: 600;
 }
-.sub-tools__btn-clear{
+
+.sub-tools__btn-clear {
     /* background: url("../img/delete.png") no-repeat; */
     align-self: flex-end;
     margin-right: 20px;
@@ -277,24 +360,28 @@ body{
     width: 50px;
     height: 50px;
 }
-.sub-tools__btn-clear{
+
+.sub-tools__btn-clear {
     cursor: pointer;
     /* Добавить анимацию тряски */
 }
-._show{
+
+._show {
     display: flex;
 }
 
-.item__title{
+.item__title {
     font-weight: 600;
     margin-bottom: 10px;
 }
+
 .item__buttons {
     display: flex;
     visibility: hidden;
     justify-content: flex-end;
     gap: 8px;
 }
+
 .item__btn {
     width: 50px;
     height: 35px;
@@ -303,10 +390,12 @@ body{
     border: 1px solid grey;
     border-radius: 5px;
 }
+
 .item__btn:hover {
     background-color: #f3f3f30a;
 
 }
-.memory__item:hover .item__buttons{
+
+.memory__item:hover .item__buttons {
     visibility: visible;
 }
