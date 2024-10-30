@@ -181,7 +181,11 @@ body{
 .calc__key_color-red:active{
     background-color: #FF86699f;
 }
-
+.calc__key_blank{
+    visibility: hidden;
+    cursor: auto;
+    pointer-events: none;
+}
 /* Блок инстурементов (история) */
 .sub-tools {
     flex: 1 0 40%;
@@ -237,14 +241,16 @@ body{
 }
 .sub-tools__history {
 }
-.history {
+.history,
+.memory {
     display: none;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
     width: 100%;
 }
-.history__list {
+.history__list,
+.memory__list {
     width: 100%;
     text-align: right;
 }
@@ -263,11 +269,12 @@ body{
     margin-bottom: 5px;
     color: #373737b4;
 }
-.item__result {
+.item__result,
+.memory__item {
     font-weight: 600;
 }
-
-.history__clear {
+.history__clear,
+.memory__clear {
     /* background: url("../img/delete.png") no-repeat; */
     align-self: flex-end;
     margin-right: 20px;
@@ -275,16 +282,12 @@ body{
     width: 50px;
     height: 50px;
 }
-.history__clear:hover {
+.history__clear:hover,
+.memory__clear:hover {
     cursor: pointer;
     /* Добавить анимацию тряски */
 
 }
-
-.memory{
-    display: none;
-}
-
 ._show{
     display: flex;
 }

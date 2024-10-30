@@ -7,10 +7,15 @@
 // Переменные
 let MEMORY = 0;
 const buttons = [
+    { class: 'calc__key calc__key_blank', id: 'key_blank1', text: '', onclick: '' },
+    { class: 'calc__key calc__key_blank', id: 'key_blank2', text: '', onclick: '' },
+    { class: 'calc__key calc__key_blank', id: 'key_blank3', text: '', onclick: '' },
+    { class: 'calc__key calc__key_color-red', id: 'key_del', text: 'del', onclick: 'delTheLastChar()' },
+
     { class: 'calc__key calc__key_color-red', id: 'key_mrc', text: 'MRC', onclick: 'readMemory()' },
     { class: 'calc__key calc__key_color-red', id: 'key_m-subtract', text: 'M-', onclick: 'subtractFromMemory()' },
     { class: 'calc__key calc__key_color-red', id: 'key_m-add', text: 'M+', onclick: 'addToMemory()' },
-    { class: 'calc__key calc__key_color-red', id: 'key_del', text: 'del', onclick: 'delTheLastChar()' },
+    { class: 'calc__key calc__key_color-red', id: 'key_msave', text: 'MS', onclick: 'saveMemory()' },
 
     { class: 'calc__key calc__key_color-orange', id: 'key_c-ce', text: 'C/CE', onclick: 'clearDisplay()' },
     { class: 'calc__key calc__key_color-orange', id: 'key_sqrt', text: '√', onclick: 'sqrtOfNumber()' },
