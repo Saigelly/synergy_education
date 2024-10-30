@@ -2,7 +2,10 @@
 // придумать грамотное округление, наверное надо задать длину символа и если он будет очень длинный после нуля тогда уже и округлять
 // Сделать блок истории
 //подумать как сделать чтобы при дабл клике по МРС не работал слушатель от одного клика опционально
+//проверку на последнйи символ переделать в функцию isOperation
 
+//Починить баг при котором вылетает ошибка при расчете если в конце знак действия
+//Починить баг при котором вылетает ошибка при записи в память если в инпуте "невернный ввод"
 
 // Переменные
 let MEMORY = 0;
@@ -13,9 +16,9 @@ const buttons = [
     { class: 'calc__key calc__key_color-red', id: 'key_del', text: 'del', onclick: 'delTheLastChar()' },
 
     { class: 'calc__key calc__key_color-red', id: 'key_mrc', text: 'MRC', onclick: 'readMemory()' },
-    { class: 'calc__key calc__key_color-red', id: 'key_m-subtract', text: 'M-', onclick: 'subtractFromMemory()' },
-    { class: 'calc__key calc__key_color-red', id: 'key_m-add', text: 'M+', onclick: 'addToMemory()' },
-    { class: 'calc__key calc__key_color-red', id: 'key_msave', text: 'MS', onclick: 'saveMemory()' },
+    { class: 'calc__key calc__key_color-red', id: 'key_m-subtract', text: 'M-', onclick: 'subtractFromLastMemory()' },
+    { class: 'calc__key calc__key_color-red', id: 'key_m-add', text: 'M+', onclick: 'addToLastMemory()' },
+    { class: 'calc__key calc__key_color-red', id: 'key_msave', text: 'MS', onclick: 'createMemoryItem()' },
 
     { class: 'calc__key calc__key_color-orange', id: 'key_c-ce', text: 'C/CE', onclick: 'clearDisplay()' },
     { class: 'calc__key calc__key_color-orange', id: 'key_sqrt', text: '√', onclick: 'sqrtOfNumber()' },
@@ -47,6 +50,7 @@ let prevResult = '0'; //помагает сбросить экран, если �
 const calcKeypad = document.querySelector('.calc__keypad');
 const displayInput = document.querySelector('.calc__result');
 const lastExpress = document.querySelector('.calc__term');
+
 //Отрисовка клавиатуры
 const createKeypad = () => {
     buttons.map((el) => {
@@ -93,19 +97,6 @@ const printToDisplayOperations = (operation) => {
     delTheLastChar();
     printToDisplay(operation);
 }
-//Выводит значение из памяти на экран
-const readMemory = () => {
-    if ('+-÷×%'.indexOf(displayInput.value.slice(-1), 0) !== -1)
-        printToDisplay(MEMORY);
-}
-//отнимает от значения в памяти результат выражения на экран
-const subtractFromMemory = () => {
-    MEMORY -= calculateAnswer(displayInput.value);
-}
-//добавляет результат выражения на экране к значению в памяти
-const addToMemory = () => {
-    MEMORY += calculateAnswer(displayInput.value);
-}
 //Удаление последнего символа
 const delTheLastChar = () => {
     if (displayInput.value === '0') return;
@@ -136,11 +127,11 @@ const sqrtOfNumber = () => {
 const displayAnswer = () => {
     // debugger;
     let exp = displayInput.value;
-    
+
     // console.log(formatInput(displayInput.value));
     let result = calculateAnswer(displayInput.value);
     clearDisplay();
-    
+
     prevResult = result; // потом prevResult надобудет поменять на ссылку в блоке истории с предыдщем выражением
     printToDisplay(formatAnswer(result));
     lastExpress.textContent = exp;
@@ -183,15 +174,7 @@ const formatAnswer = (answer) => {
 const isFloat = (num) => {
     return Number(num) === num && num % 1 !== 0;
 }
-//Слушатели
-const keyMrc = document.querySelector('#key_mrc');
-const keyC = document.querySelector('#key_c-ce');
-keyMrc.addEventListener('dblclick', () => MEMORY = 0);
-keyC.addEventListener('dblclick', () => {
-    MEMORY = 0;
-    lastExpress.textContent = '';
-    displayInput.value = '0';
-});
+
 //Считывание с клавиатуры
 window.addEventListener('keydown', (e) => {
     //  console.log(e.key);
@@ -220,16 +203,33 @@ window.addEventListener('keydown', (e) => {
 
 
 
-// блок дополнительных инструментов
+// блок дополнительных инструментов`
+//Переменные
 let historyItems = [];
+let memoryItems = [];
 
-const historyList = document.querySelector('.history__list');
-const btnClearHistory = document.querySelector('.history__clear');
+//Блоки из потока
+const historyList = document.querySelector('#history-list');
+const btnClearHistory = document.querySelector('#clear-history');
 const labelHistory = document.querySelector('[for="history"]');
 const tabHistory = document.querySelector('.history');
+
+const memoryList = document.querySelector('#memory-list');
+const btnClearMemory = document.querySelector('#clear-memory');
 const labelMemory = document.querySelector('[for="memory"]');
 const tabMemory = document.querySelector('.memory');
+const keyMrc = document.querySelector('#key_mrc');
+const keyC = document.querySelector('#key_c-ce');
 
+//Функции
+// Смена дополнительного инструмента
+const switchTab = () => {
+    labelHistory.classList.toggle('sub-tools__label_active');
+    labelMemory.classList.toggle('sub-tools__label_active');
+    tabHistory.classList.toggle('_show');
+    tabMemory.classList.toggle('_show');
+}
+//Создать элемент в блок истории
 const createHistoryItem = (exp, result) => {
     let objItem = {
         id: historyItems.length,
@@ -248,7 +248,7 @@ const createHistoryItem = (exp, result) => {
     elLi.className = 'history__item item';
     elTitle.className = 'item__express';
     elP.className = 'item__result';
-    
+
     elLi.setAttribute('id', objItem.id);
     // if (exp === '') exp = result;
     elTitle.textContent = `${exp} =`
@@ -260,16 +260,7 @@ const createHistoryItem = (exp, result) => {
     elLi.append(elP);
 
 }
-const clearHistory = () => {
-    historyList.innerHTML = '';
-    historyItems = [];
-}
-const switchTab = () => {
-    labelHistory.classList.toggle('sub-tools__label_active');
-    labelMemory.classList.toggle('sub-tools__label_active');
-    tabHistory.classList.toggle('_show');
-    tabMemory.classList.toggle('_show');
-}
+//Вывод элемента истории на дисплей
 const displayHistoryItem = (e) => {
     let clickItem = e.target.closest('.item');
     // console.log(clickItem)
@@ -279,9 +270,150 @@ const displayHistoryItem = (e) => {
     lastExpress.textContent = data.exp;
     prevResult = data.result;
 }
+//Очистка истории
+const clearHistory = () => {
+    historyList.innerHTML = '';
+    historyItems = [];
+}
+//Создание новой ячейки памяти
+const createMemoryItem = () => {
+    // <h3 class="item__title">25</h3>
+    // <div class="item__buttons">
+    //     <button class="item__btn" onclick = "clearCurrentMemory()">MC</button>
+    //     <button class="item__btn onclick = "addToCurrentMemory()">M+</button>
+    //     <button class="item__btn onclick = "subtractFromCurrentMemory">M-</button>
+    // </div>
+    let objItem = {
+        id: `memory-${memoryItems.length}`,
+        num: calculateAnswer(displayInput.value)
+    }
+    memoryItems.push(objItem);
 
+    // console.log('id ', objItem.id);
+    // console.log('num ', objItem.num);
+
+    const elLi = document.createElement('li');
+    const elTitle = document.createElement('h3');
+    const elDiv = document.createElement('div');
+    const elButton = document.createElement('button')
+
+    elLi.className = 'memory__item item';
+    elTitle.className = 'item__title';
+    elDiv.className = 'item__buttons';
+    elButton.className = 'item__btn';
+
+    const btnClearMemory = elButton.cloneNode();
+    const btnAddMemory = elButton.cloneNode();
+    const btnSubtractMemory = elButton.cloneNode();
+   
+
+    elLi.setAttribute('id', objItem.id);
+    elTitle.setAttribute('id', `${objItem.id}-num`);
+
+    // if (exp === '') exp = result;
+    elTitle.textContent = objItem.num;
+    btnClearMemory.textContent = 'MC';
+    btnAddMemory.textContent = 'M+';
+    btnSubtractMemory.textContent = 'M-';
+
+    memoryList.prepend(elLi);
+    elLi.append(elTitle);
+    elLi.append(elDiv);
+    elDiv.append(btnClearMemory);
+    elDiv.append(btnAddMemory);
+    elDiv.append(btnSubtractMemory);
+
+    btnClearMemory.onclick = deleteCurrentMemory;
+    btnAddMemory.onclick = addToCurrentMemory;
+    btnSubtractMemory.onclick = subtractFromCurrentMemory;
+}
+//Прочитать число с выбранной памяти
+const readCurrentMemory = (e) => {
+    let clickItem = e.target.closest('.item');
+    // console.log(clickItem)
+    data = memoryItems.find((item) => item.id == clickItem.id);
+    // console.log (data);
+    if('+-÷×%'.indexOf(displayInput.value.slice(-1), 0) === -1){
+        displayInput.value = data.num;
+        prevResult = data.num;
+        return; 
+    }
+    printToDisplay(data.num);
+}
+//Прибавить к выбранной памяти результат выражения с дисплея
+const addToCurrentMemory = (e) => {
+    e.stopPropagation();
+    const memoryItemEL = e.target.closest('.item');
+    const memoryItemObj = memoryItems.find((item) => item.id === memoryItemEL.id);
+    memoryItemObj.num = Number(memoryItemObj.num) + calculateAnswer(displayInput.value);
+    memoryItemEL.firstElementChild.textContent = memoryItemObj.num;
+}
+//отнять от выбранной памяти результат выражения с дисплея
+const subtractFromCurrentMemory = (e) => {
+    e.stopPropagation();
+    const memoryItemEL = e.target.closest('.item');
+    const memoryItemObj = memoryItems.find((item) => item.id === memoryItemEL.id);
+    memoryItemObj.num = Number(memoryItemObj.num) - calculateAnswer(displayInput.value);
+    memoryItemEL.firstElementChild.textContent = memoryItemObj.num;
+}
+//Удалить выбранную память
+const deleteCurrentMemory = (e) => {
+    e.stopPropagation();
+    const memoryItem = e.target.closest('.item');
+    memoryItems.splice(memoryItems.findIndex((item => item.id === memoryItem.id)), 1);
+    memoryItem.remove();
+}
+//Вывести значение последней добавленной памяти на экран
+const readMemory = () => {
+    if ('+-÷×%'.indexOf(displayInput.value.slice(-1), 0) !== -1) {
+        printToDisplay(memoryItems[memoryItems.length - 1].num);
+        return
+    }
+    clearDisplay();
+    printToDisplay(memoryItems[memoryItems.length - 1].num);
+
+}
+//отнять от значения последней добавленной памяти результат выражения на экране
+const subtractFromLastMemory = () => {
+    if(memoryItems.length){
+        const lastMemory = getLastMemoryObj();
+        lastMemory.num = Number(lastMemory.num) - calculateAnswer(displayInput.value);
+        memoryList.querySelector(`#${lastMemory.id}-num`).textContent = lastMemory.num;
+    }
+    return;
+}
+//тнять к значению последней добавленной памяти результат выражения на экране
+const addToLastMemory = () => {
+    if(memoryItems.length){
+        const lastMemory = getLastMemoryObj();
+        lastMemory.num = Number(lastMemory.num) + calculateAnswer(displayInput.value);
+        memoryList.querySelector(`#${lastMemory.id}-num`).textContent = lastMemory.num;
+    }
+    return;
+}
+//Очистить всю память
+const clearMemoryList = () => {
+    memoryList.innerHTML = '';
+    memoryItems = [];
+}
+
+//Утилиты
+//возвращает объект последней добавленной памяти из массива
+const getLastMemoryObj = () =>{
+    return memoryItems[memoryItems.length - 1];
+}
+
+//Слушатели
+memoryList.addEventListener('click', readCurrentMemory);
+historyList.addEventListener('click', displayHistoryItem);
+btnClearHistory.addEventListener('click', clearHistory);
+keyMrc.addEventListener('dblclick', clearMemoryList);
+btnClearMemory.addEventListener('click', clearMemoryList);
+keyC.addEventListener('dblclick', () => {
+    clearMemoryList();
+    lastExpress.textContent = '';
+    displayInput.value = '0';
+});
 document.querySelectorAll('input[type="radio"][name="sub-tools"]').forEach(radio => {
     radio.addEventListener('change', switchTab);
 });
-historyList.addEventListener('click', displayHistoryItem);
-btnClearHistory.addEventListener('click', clearHistory);

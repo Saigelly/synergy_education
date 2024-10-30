@@ -239,23 +239,19 @@ body{
     flex: 1 1 auto;
     
 }
-.sub-tools__history {
-}
-.history,
-.memory {
+
+.sub-tools__tab-content {
     display: none;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
     width: 100%;
 }
-.history__list,
-.memory__list {
+.sub-tools__list {
     width: 100%;
     text-align: right;
 }
-.history__item {
-}
+
 .item {
     padding: 10px 20px;
     margin-bottom: 15px;
@@ -269,12 +265,11 @@ body{
     margin-bottom: 5px;
     color: #373737b4;
 }
-.item__result,
-.memory__item {
+.item__result
+ {
     font-weight: 600;
 }
-.history__clear,
-.memory__clear {
+.sub-tools__btn-clear{
     /* background: url("../img/delete.png") no-repeat; */
     align-self: flex-end;
     margin-right: 20px;
@@ -282,12 +277,36 @@ body{
     width: 50px;
     height: 50px;
 }
-.history__clear:hover,
-.memory__clear:hover {
+.sub-tools__btn-clear{
     cursor: pointer;
     /* Добавить анимацию тряски */
-
 }
 ._show{
     display: flex;
+}
+
+.item__title{
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.item__buttons {
+    display: flex;
+    visibility: hidden;
+    justify-content: flex-end;
+    gap: 8px;
+}
+.item__btn {
+    width: 50px;
+    height: 35px;
+    font-size: 20px;
+    line-height: 35px;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+.item__btn:hover {
+    background-color: #f3f3f30a;
+
+}
+.memory__item:hover .item__buttons{
+    visibility: visible;
 }
