@@ -4,7 +4,7 @@
 //подумать как сделать чтобы при дабл клике по МРС не работал слушатель от одного клика опционально
 //проверку на последнйи символ переделать в функцию isOperation
 
-//Починить баг с квадартным корнем, который в историю выводит число из которого брала корень
+
 //Починить баг при котором вылетает ошибка при расчете если в конце знак действия
 //Починить баг при котором вылетает ошибка при записи в память если в инпуте "невернный ввод"
 
@@ -162,9 +162,11 @@ const sqrtOfNumber = () => {
         : printToDisplay('Неверный ввод')
 
     lastExpress.textContent = exp;
-    createHistoryItem(exp, String(resultInput));
     prevResult = displayInput.value;
+    createHistoryItem(exp, String(prevResult));
+    
 }
+
 //Функции блока "History"
 //Создать элемент в блок истории
 const createHistoryItem = (exp, result) => {
@@ -217,6 +219,7 @@ const clearHistoryList = () => {
     historyItems = [];
     historyDescr.classList.add('_show');
 }
+
 //Функции блока "Memory" и клавиш клавиатуры связанных с "Memory"
 //Создание новой ячейки памяти
 const createMemoryItem = (value) => {
