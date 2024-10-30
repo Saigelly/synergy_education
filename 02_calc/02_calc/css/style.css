@@ -255,11 +255,9 @@ body {
 /* Блок инстурементов (история) */
 .sub-tools {
     flex: 1 0 40%;
-    min-height: 100%;
-
     display: flex;
     flex-direction: column;
-
+    
 
     /* временно для наглядности */
     border: 1px solid grey;
@@ -330,6 +328,8 @@ body {
 .sub-tools__list {
     width: 100%;
     text-align: right;
+    overflow-y: auto;
+    max-height: 700px;
 }
 
 .item {
@@ -393,7 +393,6 @@ body {
 
 .item__btn:hover {
     background-color: #f3f3f30a;
-
 }
 
 .memory__item:hover .item__buttons {
