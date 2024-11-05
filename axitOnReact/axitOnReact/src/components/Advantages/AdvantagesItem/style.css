@@ -1,0 +1,38 @@
+.title {
+    position: relative;
+    font-size: 36px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000;
+    margin-bottom: 100px;
+}
+
+.title::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 170px;
+    height: 1px;
+    background-color: #EC7979;
+}
+
+@media (max-width: 1024px) {
+    .title {
+        font-size: 24px;
+        margin-bottom: 80px;
+    }
+
+    .title::after {
+        bottom: -50px;
+    }
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 24px;
+        margin-bottom: 75px;
+    }
+
+}

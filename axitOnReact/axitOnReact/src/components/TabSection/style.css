@@ -1,0 +1,171 @@
+.tab-section {
+  font-family: "Open Sans", sans-serif;
+  position: relative;
+  margin-bottom: 50px;
+}
+
+.tab-section__inner {
+  padding-top: 100px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.tab-section__label {
+  position: relative;
+  top: 1px;
+  z-index: 5;
+  display: inline-flex;
+  min-width: 184px;
+  min-height: 40px;
+  color: #333333;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.tab {
+  display: flex;
+  width: 400%;
+  height: 100%;
+}
+
+._active {
+  border: 1px solid #c6cbcd;
+  border-bottom: 1px solid #fff;
+  border-radius: 5px 5px 0 0;
+}
+
+.tab__item {
+  width: 25%;
+  display: flex;
+  padding-left: 100px;
+
+  border: 1px solid #c6cbcd;
+
+}
+
+.tab__content {
+  flex: 1 1 auto;
+  padding: 45px 10px 50px 0;
+  margin-right: auto;
+}
+
+.tab__title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 70px;
+}
+
+.tab__description {
+  font-family: "Raleway", sans-serif;
+  max-width: 570px;
+  color: #000;
+  margin-bottom: 25px;
+}
+
+.tab__description p:not(:last-of-type) {
+  margin-bottom: 1em;
+}
+
+.tab__button {
+  width: 270px;
+  color: #fff;
+}
+
+.tab__img {
+  position: relative;
+  flex: 1 0 40%;
+}
+
+.tab__img img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1024px) {
+  .tab-section__inner {
+    padding-top: 50px;
+  }
+
+
+  .tab-section__label {
+    min-width: 156px;
+  }
+
+  .tab__item {
+    padding-left: 50px;
+  }
+
+  .tab__content {
+    padding-top: 30px;
+  }
+
+  .tab__title {
+    font-size: 24px;
+  }
+
+  .tab__description {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab__img {
+    display: none;
+
+  }
+
+  .tab__content {
+    padding-bottom: 0;
+  }
+
+  .tab__content {
+    padding-right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab__item {
+    padding: 30px 20px;
+  }
+
+  a.tab__button {
+    width: 240px;
+
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .tab-section {
+    margin-bottom: 0;
+  }
+
+  .tab-section__inner {
+    padding-top: 40px;
+  }
+
+  .tab__title {
+    text-align: center;
+  }
+
+  .tab__description {
+    text-align: center;
+  }
+
+  .tab-section__navigation {
+    display: flex;
+  }
+
+  .tab-section__label {
+    min-width: 90px;
+    flex: 1 1 33.3333%;
+  }
+}

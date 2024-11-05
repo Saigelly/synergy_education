@@ -1,0 +1,144 @@
+.menu__close {
+  display: none;
+}
+
+#menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+}
+
+#menu+label {
+  width: 45px;
+  height: 45px;
+  display: none;
+  border-radius: 50%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    all 0.2s ease-in 0s;
+}
+
+#menu+label .menu__burger-img {
+  width: 34px;
+  height: 3px;
+  background-color: #fff;
+  transition:
+    all 0.2s ease-in 0s;
+}
+
+#menu+label .menu__burger-img:not(:last-child) {
+  margin-bottom: 6px;
+}
+
+#menu+label:hover {
+  border: 1px solid #fff;
+  scale: 1.05;
+}
+
+#menu+label:hover .menu__burger-img {
+  width: 26px;
+}
+
+#menu+label:hover .menu__burger-img:not(:last-child) {
+  margin-bottom: 4px;
+
+}
+
+#menu:checked~.menu__list {
+  top: 0;
+
+}
+
+
+
+.menu {
+  margin-left: 15px;
+}
+
+.menu__list {
+  display: flex;
+  transition: top .8s ease-in 0s;
+}
+
+.menu__item {
+
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+
+}
+
+.menu__link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 114px;
+  height: 75px;
+  background-color: #000;
+  transition: background-color 0.3s linear 0s;
+
+}
+
+.menu__link:hover {
+  background-color: #EC7979;
+}
+
+.menu__link:active {
+  background-color: #AB4949;
+}
+
+@media (max-width: 768px){
+  .menu__link{
+    width: 90px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 600px) {
+  .menu__list {
+    position: absolute;
+    z-index: 10;
+    top: -100vh;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    background-color: #000;
+    padding: 10px 20px;
+  }
+
+  .menu__burger-top {
+    display: flex;
+    min-height: 56px;
+    justify-content: space-between;
+    padding: 16px 0;
+  }
+
+  .menu__close {
+    display: block;
+    height: 100%;
+  }
+
+  .menu__close img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .menu__item {
+    height: 68px;
+  }
+
+  .menu__link {
+    width: 100%;
+    height: 100%;
+  }
+
+  #menu+label {
+    display: flex;
+  }
+}

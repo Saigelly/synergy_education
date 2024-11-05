@@ -1,0 +1,38 @@
+.btn-transparent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid #fff;
+    height: 58px;
+    transition:
+        color 0.3s linear 0s,
+        border-color 0.3s linear 0s;
+}
+
+.btn-transparent:hover {
+    color: #EC7979;
+    border-color: #EC7979;
+}
+
+.btn-transparent:active {
+    color: #fff;
+    border-color: #AB4949;
+}
+.top__button {
+    max-width: 270px;
+    font-weight: 600;
+}
+@media (max-width: 1024px){
+.top__button{
+    width: 183px;
+    height: 50px;
+  }
+
+}
+@media (max-width: 768px){
+.top__button{
+    margin-bottom: 56px;
+    width: 288px;
+  }
+}

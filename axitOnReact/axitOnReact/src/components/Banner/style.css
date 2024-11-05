@@ -1,0 +1,46 @@
+.banner {
+    background-image: url('./src/components/Banner/bg-banner.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.banner__inner {
+    padding: 100px 0 50px;
+    min-height: 440px;
+    color: #fff;
+}
+
+.banner__title.title {
+    color: #fff;
+}
+
+.banner__title.title:after {
+    background-color: #fff;
+}
+
+.banner__subtitle {
+    margin-bottom: 70px;
+}
+
+.banner__btn {
+    max-width: 370px;
+    margin: 0 auto;
+}
+
+
+@media (max-width: 1024px) {
+
+    .banner__subtitle {
+        margin-bottom: 30px;
+    }
+
+    .banner__btn {
+        max-width: 320px;
+    }
+
+    .banner__inner {
+        min-height: 360px;
+    }
+}

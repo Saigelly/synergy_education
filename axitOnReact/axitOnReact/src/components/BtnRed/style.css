@@ -1,0 +1,27 @@
+
+.red-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    background-color: #EC7979;
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s linear 0s;
+  }
+  
+  .red-button:hover{
+    background-color: #AB4949;
+  }
+  .red-button:active{
+    background-color: #EC7979;
+    box-shadow: 0 0 10px #AB4949;
+  }
+  
+@media (max-width: 1024px){
+
+}
+@media (max-width: 768px){
+
+}

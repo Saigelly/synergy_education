@@ -1,0 +1,40 @@
+.price {
+    background-color: #F5F5F5;
+    padding: 100px 0 50px;
+}
+
+.price__subtitle {
+    margin-bottom: 80px;
+}
+
+.price__content {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+@media (max-width: 1024px) {
+    .price__subtitle {
+        margin-bottom: 50px;
+    }
+
+    .price__content {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .price__content {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 600px) {
+    .price {
+        padding: 50px 0 25px;
+    }
+
+    .price__content {
+        gap: 25px;
+    }
+}
