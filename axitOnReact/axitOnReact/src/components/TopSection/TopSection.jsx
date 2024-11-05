@@ -3,7 +3,7 @@ import BtnTransparent from '../BtnTransparent/BtnTransparent';
 import Input from '../Input/Input';
 import Logo from '../Logo/Logo';
 import './style.css';
-// Решить проблему с БТНом, дело в том что в компоненте класс присваивается ссылки, как в хедере, а тут у меня просто имдж
+
 
 const TopSection = () => {
     const inputs = [
