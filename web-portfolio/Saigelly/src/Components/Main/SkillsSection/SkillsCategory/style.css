@@ -1,0 +1,31 @@
+.skills__category {
+    margin-bottom: 40px;
+}
+
+.skills__category-title{
+    font-size: 24px;
+    color: #FFA45B; 
+    margin-bottom: 20px;
+}
+
+.skills__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+@media (max-width: 1000px) {
+    .skills__category-title{
+        font-size: 20px;
+    }
+    .skills__grid {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .skills__category-title{
+        font-size: 18px;
+    }
+}

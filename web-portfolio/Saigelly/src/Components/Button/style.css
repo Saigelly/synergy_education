@@ -1,0 +1,81 @@
+.btn {
+    font-size: 16px;
+    padding: 12px 24px;
+    text-align: center;
+    color: #FFFFFF;
+    /* padding: 24px 36px; */
+    border: none;
+    border-radius: 6px;
+    /* font-size: 20px; */
+    font-weight: 400;
+    cursor: pointer;
+    transition:
+        background-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.2s ease,
+        color 0.3s ease,
+    ;
+}
+
+.btn_blue {
+    background-color: #2DD4BF;
+}
+
+.btn_blue:hover {
+    background-color: #25B7A6;
+    /* Более тёмный оттенок для эффекта при наведении */
+    box-shadow: 0px 4px 12px rgba(45, 212, 191, 0.4);
+}
+
+.btn_blue:active {
+    background-color: #1EA992;
+    transform: scale(0.97);
+}
+
+.btn_orange {
+    background-color: #FFA45B;
+}
+
+.btn_orange:hover {
+    background-color: #FF8A3A;
+    box-shadow: 0px 4px 12px rgba(255, 164, 91, 0.4);
+}
+
+.btn_orange:active {
+    background-color: #FF7A2D;
+    transform: scale(0.97);
+}
+
+.btn_transparent {
+    color: #2DD4BF;
+
+    border: 2px solid #2DD4BF;
+    background-color: transparent
+}
+
+.btn_transparent:hover {
+    background-color: #2DD4BF;
+    color: #ffffff;
+
+}
+
+.btn_transparent:active {
+    background-color: #1EA992;
+    transform: scale(0.97);
+}
+
+@media (max-width: 1000px) {
+    .btn {
+        font-weight: 700;
+        font-size: 15px;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .btn {
+        font-size: 14px;
+        padding: 10px 18px;
+        border-radius: 8px;
+    }
+}
