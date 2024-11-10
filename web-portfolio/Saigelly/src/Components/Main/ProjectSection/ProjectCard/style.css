@@ -4,6 +4,7 @@
     border-radius: 8px;
     flex: 1 1 45%;
     cursor: pointer;
+    animation: visibility-card 0.3s ease-in forwards;
 }
 
 .project-card__inner {
@@ -17,8 +18,6 @@
 .project-card:hover .project-card__inner {
     transform: rotateY(180deg);
     transition: transform 0.4s ease-in 0.4s;
-
-
 }
 
 .project-card__front,
@@ -74,7 +73,8 @@
     color: #dddddd;
 }
 
-@media (max-width: 1000px) {
+
+@media (max-width: 1024px) {
     .project-card__back-title {
         font-size: 20px;
     }
@@ -83,7 +83,7 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .project-card__back-title {
         font-size: 18px;
     }
@@ -94,4 +94,14 @@
     flex-basis: 100%;
     }
 
+}
+
+@keyframes visibility-card {
+    from {
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+
+    }
 }

@@ -17,7 +17,7 @@
 }
 
 
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
     .about__img {
         flex-basis: 200px;
         height: 200px;
@@ -28,7 +28,7 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .about__img {
         position: absolute;
         opacity: 0.3;

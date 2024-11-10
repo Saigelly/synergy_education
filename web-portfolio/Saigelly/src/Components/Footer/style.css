@@ -1,0 +1,26 @@
+.footer{
+    background-color: #1E2A38;
+    color: #fff;
+  }
+  .footer__inner{
+    display: flex;
+    flex-direction: column;
+    min-height: 164px;
+    padding: 35px 0 30px;
+  }
+  .footer__list{
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: auto;
+  }
+
+  .footer__copy{
+    color: #fff;
+    text-align: center;
+  }
+
+@media (max-width: 1024px) {
+    .footer__copy{
+        font-size: 14px;
+      }
+}

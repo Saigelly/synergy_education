@@ -1,7 +1,7 @@
 
 import AboutItem from "./AboutItem/AboutItem";
 import "./style.css";
-// const AboutItem = ({ isReverse = false, subClass = null, imgSrc = '', imgAlt = '', subClassImg = null }) => {
+
 
 const About = () => {
     const aboutItems = [

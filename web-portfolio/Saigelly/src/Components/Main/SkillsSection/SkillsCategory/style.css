@@ -15,7 +15,7 @@
     justify-content: center;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
     .skills__category-title{
         font-size: 20px;
     }
@@ -24,7 +24,7 @@
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .skills__category-title{
         font-size: 18px;
     }
