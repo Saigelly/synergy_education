@@ -2,7 +2,12 @@ import MenuItem from "./MenuItem/MenuItem";
 import "./style.css";
 
 const Header = () => {
-    const menuItems = ["Портфолио", "Навыки", "Контакты"]
+    const menuItems = [
+        {value: "Главная", path: '/' },
+        {value: "Портфолио", path: '/portfolio' },
+        {value: "Навыки", path: '/skills' },
+        {value: "Контакты", path: '/contact' },
+    ]
     return (
         <header className="header">
             <div className="container">
