@@ -56,7 +56,9 @@
     max-height: 400px;
 }
 
-
+.btn_hash-link{
+    padding: 16px 24px;
+}
 
 @media (max-width: 1024px) {
     .hero {

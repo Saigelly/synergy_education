@@ -5,33 +5,40 @@ const Footer = () => {
     const items = [
         {
             imgSrc: 'telegram.svg',
-            href: 'tg',
-            altImage: 'telegram'
+            href: 'https://t.me/Saigelly',
+            altImage: 'telegram',
+            target: "_blank"
         },
         {
             imgSrc: 'email.png',
-            href: 'email',
-            altImage: 'email'
+            href: 'mailto:Saigellyy@yandex.ru',
+            altImage: 'email',
+            target: "_self"
+
         },
         {
             imgSrc: 'vk.svg',
-            href: 'vk',
-            altImage: 'vk'
+            href: 'https://vk.com/rinars',
+            altImage: 'vk',
+            target: "_blank"
         },
         {
             imgSrc: 'github.svg',
-            href: 'github',
-            altImage: 'github'
+            href: 'https://github.com/Saigelly',
+            altImage: 'github',
+            target: "_blank"
         },
         {
             imgSrc: 'whatsup.svg',
-            href: 'whatsup',
-            altImage: 'whatsup'
+            href: 'https://wa.me/79212147599',
+            altImage: 'whatsup',
+            target: "_blank"
         },
         {
             imgSrc: 'phone.png',
-            href: 'phone',
-            altImage: 'phone'
+            href: 'tel:+79212147599',
+            altImage: 'phone',
+            target: "_self"
         },
     ]
     return (
@@ -39,7 +46,7 @@ const Footer = () => {
             <div class="container">
                 <div class="footer__inner">
                     <ul class="footer__list social-list">
-                        {items.map(social => <ListItem href={social.href} imgSrc={social.imgSrc} altImage={social.altImage} key={social.altImage}/> )}
+                        {items.map(social => <ListItem href={social.href} imgSrc={social.imgSrc} altImage={social.altImage} key={social.altImage} target={social.target}/> )}
                     </ul>
                     <h4 class="footer__copy">© Saigelly</h4>
                 </div>

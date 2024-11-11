@@ -8,6 +8,7 @@ const Button = ({color = 'blue', value = null, link = null, type='button', onCli
         ? <button
          className={`btn btn_${color} ${subClass}`}
          onClick={() => {onClickFn()}}
+         href={link}
           >{value}</button>
         : <a href={link} target="_blank" className={`btn btn_${color} ${subClass}`}>{value}</a>
     )

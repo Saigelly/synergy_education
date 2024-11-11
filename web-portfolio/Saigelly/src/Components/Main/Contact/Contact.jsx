@@ -9,27 +9,29 @@ const Contact = ({ }) => {
     const methodsOfCommun = [
         {
             id: "telegram",
-            href: "hrefTg",
+            href: "https://t.me/Saigelly",
             iconSrc: "contact/telegram.svg",
-            descr: "Написать в Telegram"
+            descr: "Написать в Telegram",
+            target: "_blank"
         },
         {
             id: "phone",
-            href: "hrefPhone",
+            href: "tel:+79212147599",
             iconSrc: "contact/phone.png",
             descr: "+7(921)-214-75-99"
         },
         {
             id: "mail",
-            href: "hrefmail",
+            href: "mailto:Saigellyy@yandex.ru",
             iconSrc: "contact/email.png",
-            descr: "Saigellyy@yandex.ru"
+            descr: "Saigellyy@yandex.ru",
+            
         },
     ]
 
 
     return (
-        <div className="contact">
+        <div className="contact" id="contact">
             <div className="container">
                 <Title subClass="contact__title" value='Связаться' />
 

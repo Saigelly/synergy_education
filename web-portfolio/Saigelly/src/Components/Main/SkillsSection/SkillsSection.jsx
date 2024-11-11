@@ -30,7 +30,7 @@ const SkillsSection = () => {
         },
     ]
     return (
-        <div className="skills">
+        <div className="skills" id="skills">
             <div className="container">
                 <Title subClass="skills__title" value="Мои навыки"/>
                 {categories.map((item, index) => <SkillsCategory name={item.name} cards={item.cards} key={index} />)}

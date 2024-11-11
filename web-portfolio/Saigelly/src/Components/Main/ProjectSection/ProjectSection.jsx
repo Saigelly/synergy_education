@@ -95,7 +95,7 @@ const ProjectSection = () => {
         setNumOfProjects(4);
     }
     return (
-        <div className="projects">
+        <div className="projects" id="projects">
             <div className="container">
                 <Title subClass="projects__title" value="Мои проекты" />
                 <div className="projects__grid">
